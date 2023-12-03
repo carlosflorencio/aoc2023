@@ -70,8 +70,6 @@ function visitAdjacent(input, x, y) {
 }
 
 function getAdjacentNumberHorizontal(map, x, y) {
-  let rightIdx = x
-  let leftIdx = x
   let ch = map[y][x]
 
   if (ch === undefined || !isNumber(ch)) {
@@ -81,25 +79,18 @@ function getAdjacentNumberHorizontal(map, x, y) {
   let num = ch
   map[y][x] = "." // mark visited
 
-  // left
-  while (rightIdx++ < map[y].length) {
-    const ch = map[y][rightIdx]
-    if (isNumber(ch)) {
-      num += ch
-      map[y][rightIdx] = "." // mark visited
-    } else {
-      break
-    }
+  // right
+  let idx = x
+  while (idx++ < map[y].length && isNumber(map[y][idx])) {
+    num += map[y][idx]
+    map[y][idx] = "." // mark visited
   }
 
-  while (leftIdx-- >= 0) {
-    const ch = map[y][leftIdx]
-    if (isNumber(ch)) {
-      num = ch + num
-      map[y][leftIdx] = "." // mark visited
-    } else {
-      break
-    }
+  // left
+  idx = x
+  while (idx-- >= 0 && isNumber(map[y][idx])) {
+    num = map[y][idx] + num
+    map[y][idx] = "." // mark visited
   }
 
   return parseInt(num)
